@@ -19,7 +19,7 @@ RichTextWriter(
   And we're stayin' alive, stayin' alive
   Ah, ha, ha, ha, stayin' alive, stayin' alive
   Ah, ha, ha, ha, stayin' alive
-  '''.trim(),
+  ''',
   delay: 25,
   delimiter: " ",
 );
@@ -27,7 +27,7 @@ RichTextWriter(
 
 ## Rich text:
 
-Write rich elements using normal TextSpans.
+Compose TextSpans together like you would in a `RichText`.
 
 ![Demo 2](./example/demos/demo2.gif)
 
@@ -103,7 +103,8 @@ RichTextWriter.span(
 
 ## Extended text:
 
-Use extended text span behavior with ExtendedTextSpan and ExtendedWidgetSpan.
+The `ExtendedTextSpan` and `ExtendedWidgetSpan` support custom text writing including
+variable delays and start/complete handlers.
 
 ![Demo 3](./example/demos/demo3.gif)
 

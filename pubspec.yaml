@@ -1,7 +1,7 @@
 name: rich_text_writer
-description: "A new Flutter package project."
+description: A Rich text writer for Flutter.
 version: 0.0.1
-homepage:
+homepage: https://github.com/danReynolds/rich_text_writer
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
