@@ -1,25 +1,22 @@
 part of 'rich_text_writer.dart';
 
 typedef RhythmBuilder = Duration Function(
-  String word,
+  String token,
   int spanIndex,
   int totalSpans,
-  // Base duration per character
-  double speed,
+  int speed,
 );
 
 const _defaultWidgetDuration = Duration(milliseconds: 100);
-const double _defaultTextDelay = 25;
+const int _defaultTokenDelay = 80;
 
-/// The default behavior is to use a natural typing duration for word output
-/// using a randomness factor to add unpredictability and a curve to simulate typing rhythm.
-/// Returns the duration to display the given word for.
-Duration _defaultRhythmBuilder(
+/// The word rhythm builder uses a natural typing duration for word output combined
+/// with a randomness factor to add unpredictability and a curve to simulate typing rhythm.
+Duration wordRhythmBuilder(
   String word,
   int spanIndex,
   int totalSpans,
-  // Base delay per character
-  double charDelay,
+  int delay,
 ) {
   // Get word length
   int wordLength = word.length;
@@ -45,7 +42,17 @@ Duration _defaultRhythmBuilder(
       rhythmFactor * lengthFactor * punctuationFactor * randomFactor;
 
   // Compute total duration for this word and ensure a minimum delay
-  int rhythmicDelay =
-      max(charDelay, (charDelay * wordLength * totalFactor)).toInt();
+  int rhythmicDelay = max(delay, (delay * wordLength * totalFactor)).toInt();
   return Duration(milliseconds: rhythmicDelay);
+}
+
+/// The default rhythm behavior is to just apply the delay to the given token, which may be a word
+/// or alternatively deliminated text.
+Duration defaultRhythmBuilder(
+  String token,
+  int spanIndex,
+  int totalSpans,
+  int delay,
+) {
+  return const Duration(milliseconds: _defaultTokenDelay);
 }

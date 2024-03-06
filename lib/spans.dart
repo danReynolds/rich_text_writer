@@ -14,7 +14,7 @@ mixin ExtendedSpan {
 }
 
 class ExtendedTextSpan extends TextSpan with ExtendedSpan {
-  final double? delay;
+  final int? delay;
   final String? delimiter;
 
   ExtendedTextSpan({
@@ -32,7 +32,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
 
   factory ExtendedTextSpan.clone(
     TextSpan span, {
-    double? delay,
+    int? delay,
     String? delimiter,
     void Function()? onStart,
     void Function()? onComplete,

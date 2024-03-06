@@ -12,18 +12,21 @@ part 'spans.dart';
 class RichTextWriter extends StatefulWidget {
   final InlineSpan span;
   final RhythmBuilder? rhythmBuilder;
+  final TextAlign textAlign;
 
   const RichTextWriter._(
     this.span, {
     super.key,
     this.rhythmBuilder,
+    this.textAlign = TextAlign.start,
   });
 
   factory RichTextWriter.span(
     TextSpan span, {
     Key? key,
-    double? delay,
+    int? delay,
     String? delimiter,
+    TextAlign textAlign = TextAlign.start,
     void Function()? onStart,
     void Function()? onComplete,
     RhythmBuilder? rhythmBuilder,
@@ -37,6 +40,7 @@ class RichTextWriter extends StatefulWidget {
         onComplete: onComplete,
       ),
       key: key,
+      textAlign: textAlign,
       rhythmBuilder: rhythmBuilder,
     );
   }
@@ -44,8 +48,9 @@ class RichTextWriter extends StatefulWidget {
   factory RichTextWriter(
     String text, {
     Key? key,
-    double? delay,
+    int? delay,
     TextStyle? style,
+    TextAlign textAlign = TextAlign.start,
     String? delimiter,
     GestureRecognizer? recognizer,
     void Function()? onStart,
@@ -63,6 +68,7 @@ class RichTextWriter extends StatefulWidget {
         onComplete: onComplete,
       ),
       rhythmBuilder: rhythmBuilder,
+      textAlign: textAlign,
       key: key,
     );
   }
@@ -93,7 +99,7 @@ class RichTextWriterState extends State<RichTextWriter> {
       case TextSpan resolvedSpan:
         final delay =
             (resolvedSpan is ExtendedTextSpan ? resolvedSpan.delay : null) ??
-                _defaultTextDelay;
+                _defaultTokenDelay;
 
         final text = resolvedSpan.text!;
         final writtenSpanCount = _writtenSpans.length;
@@ -105,7 +111,7 @@ class RichTextWriterState extends State<RichTextWriter> {
               totalSpanCount,
               delay,
             ) ??
-            _defaultRhythmBuilder(
+            defaultRhythmBuilder(
               resolvedSpan.text!,
               _writtenSpans.length,
               _remainingSpans.length + _writtenSpans.length,
@@ -262,10 +268,13 @@ class RichTextWriterState extends State<RichTextWriter> {
           /// the visible one as it is written. This is necessary so that the full space for displaying
           /// the completed RichText is allocated up front and the surrounding layout just does get moved around as
           /// it is written out.
-          child: RichText(text: _shadowSpan),
+          child: RichText(text: _shadowSpan, textAlign: widget.textAlign),
         ),
         if (_remainingSpans.isNotEmpty)
-          RichText(text: TextSpan(children: _writtenSpans)),
+          RichText(
+            text: TextSpan(children: _writtenSpans),
+            textAlign: widget.textAlign,
+          ),
       ],
     );
   }
