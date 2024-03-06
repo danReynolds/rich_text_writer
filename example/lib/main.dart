@@ -45,14 +45,16 @@ class _MyHomePageState extends State<MyHomePage> {
         alignment: Alignment.center,
         child: demos[_demoIndex](context),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Text('Next'),
-        onPressed: () {
-          setState(() {
-            _demoIndex++;
-          });
-        },
-      ),
+      floatingActionButton: _demoIndex + 1 < demos.length
+          ? FloatingActionButton.extended(
+              label: const Text('Next'),
+              onPressed: () {
+                setState(() {
+                  _demoIndex++;
+                });
+              },
+            )
+          : null,
     );
   }
 }
