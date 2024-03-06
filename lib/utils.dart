@@ -54,5 +54,5 @@ Duration defaultRhythmBuilder(
   int totalSpans,
   int delay,
 ) {
-  return const Duration(milliseconds: _defaultTokenDelay);
+  return Duration(milliseconds: delay);
 }
