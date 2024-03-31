@@ -49,7 +49,7 @@ final basicDemo = (BuildContext context) => DemoWidget(
       key: const Key('Basic demo'),
       title: 'Basic writer demo',
       description:
-          'The text is printed using the specified delimiter and delay.',
+          'The text is printed using the specified delimiter and duration.',
       code: HighlightView(
         """RichTextWriter(
   '''
@@ -60,7 +60,7 @@ final basicDemo = (BuildContext context) => DemoWidget(
   Ah, ha, ha, ha, stayin' alive, stayin' alive
   Ah, ha, ha, ha, stayin' alive.
   '''.trim(),
-  delay: 25,
+  duration: 25,
   delimiter: " ",
   onStart: () {
     print('Started');
@@ -87,7 +87,7 @@ Ah, ha, ha, ha, stayin' alive, stayin' alive
 Ah, ha, ha, ha, stayin' alive
               '''
             .trim(),
-        delay: 25,
+        duration: const Duration(milliseconds: 25),
         delimiter: " ",
       ),
     );
@@ -160,7 +160,7 @@ final basicRichDemo = (BuildContext context) => DemoWidget(
                   }),
           ],
         ),
-        delay: 25,
+        duration: const Duration(milliseconds: 25),
         delimiter: " ",
       ),
     );
@@ -198,8 +198,8 @@ final extendedDemo = (BuildContext context) => DemoWidget(
             ExtendedTextSpan(
               children: [
                 ExtendedTextSpan(
-                  text: 'Variable text delay',
-                  delay: 300,
+                  text: 'Variable text duration',
+                  duration: const Duration(milliseconds: 300),
                   style: const TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,
@@ -214,7 +214,7 @@ final extendedDemo = (BuildContext context) => DemoWidget(
                     fontStyle: FontStyle.italic,
                     fontSize: 14,
                   ),
-                  delay: 100,
+                  duration: const Duration(milliseconds: 100),
                 ),
                 const TextSpan(
                   text:
@@ -222,7 +222,7 @@ final extendedDemo = (BuildContext context) => DemoWidget(
                 ),
                 ExtendedTextSpan(
                   text: 'Now',
-                  delay: 200,
+                  duration: const Duration(milliseconds: 200),
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -256,7 +256,7 @@ final extendedDemo = (BuildContext context) => DemoWidget(
             ),
           ],
         ),
-        delay: 25,
+        duration: const Duration(milliseconds: 25),
         delimiter: " ",
       ),
     );

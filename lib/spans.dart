@@ -14,7 +14,7 @@ mixin ExtendedSpan {
 }
 
 class ExtendedTextSpan extends TextSpan with ExtendedSpan {
-  final int? delay;
+  final Duration? duration;
   final String? delimiter;
 
   ExtendedTextSpan({
@@ -23,7 +23,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
     super.style,
     super.recognizer,
     this.delimiter,
-    this.delay,
+    this.duration,
     final void Function()? onStart,
     final void Function()? onComplete,
   }) {
@@ -32,7 +32,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
 
   factory ExtendedTextSpan.clone(
     TextSpan span, {
-    int? delay,
+    Duration? duration,
     String? delimiter,
     void Function()? onStart,
     void Function()? onComplete,
@@ -45,7 +45,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
         children: span.children,
         style: span.style ?? style,
         recognizer: span.recognizer ?? recognizer,
-        delay: span.delay ?? delay,
+        duration: span.duration ?? duration,
         delimiter: span.delimiter ?? delimiter,
         onStart: () {
           span.onStart?.call();
@@ -63,7 +63,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
       children: span.children,
       style: span.style ?? style,
       recognizer: span.recognizer ?? recognizer,
-      delay: delay,
+      duration: duration,
       delimiter: delimiter,
       onStart: onStart,
       onComplete: onComplete,

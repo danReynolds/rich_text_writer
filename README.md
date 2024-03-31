@@ -6,7 +6,7 @@ Write text with `RichTextWriter`.
 
 ## Basic text:
 
-The text is printed using the specified delimiter and delay.
+The text is printed using the specified delimiter and duration.
 
 ![Demo 1](./example/demos/demo1.gif)
 
@@ -20,7 +20,7 @@ RichTextWriter(
   Ah, ha, ha, ha, stayin' alive, stayin' alive
   Ah, ha, ha, ha, stayin' alive
   ''',
-  delay: 25,
+  duration: 25,
   delimiter: " ",
 );
 ```
@@ -96,7 +96,7 @@ RichTextWriter.span(
             }),
     ],
   ),
-  delay: 25,
+  duration: 25,
   delimiter: " ",
 );
 ```
@@ -104,7 +104,7 @@ RichTextWriter.span(
 ## Extended text:
 
 The `ExtendedTextSpan` and `ExtendedWidgetSpan` support custom text writing including
-variable delays and start/complete handlers.
+variable durations and start/complete handlers.
 
 ![Demo 3](./example/demos/demo3.gif)
 
@@ -138,8 +138,8 @@ RichTextWriter.span(
       ExtendedTextSpan(
         children: [
           ExtendedTextSpan(
-            text: 'Variable text delay',
-            delay: 300,
+            text: 'Variable text duration',
+            duration: 300,
             style: const TextStyle(
               color: Colors.blue,
               fontWeight: FontWeight.bold,
@@ -154,7 +154,7 @@ RichTextWriter.span(
               fontStyle: FontStyle.italic,
               fontSize: 14,
             ),
-            delay: 100,
+            duration: 100,
           ),
           const TextSpan(
             text:
@@ -162,7 +162,7 @@ RichTextWriter.span(
           ),
           ExtendedTextSpan(
             text: 'Now',
-            delay: 200,
+            duration: 200,
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -196,7 +196,7 @@ RichTextWriter.span(
       ),
     ],
   ),
-  delay: 25,
+  duration: 25,
   delimiter: " ",
 );
 ```
