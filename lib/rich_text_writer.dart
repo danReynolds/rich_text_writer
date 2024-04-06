@@ -13,12 +13,14 @@ class RichTextWriter extends StatefulWidget {
   final InlineSpan span;
   final RhythmBuilder? rhythmBuilder;
   final TextAlign textAlign;
+  final bool enabled;
 
   const RichTextWriter._(
     this.span, {
     super.key,
     this.rhythmBuilder,
     this.textAlign = TextAlign.start,
+    this.enabled = true,
   });
 
   factory RichTextWriter.span(
@@ -30,6 +32,7 @@ class RichTextWriter extends StatefulWidget {
     void Function()? onStart,
     void Function()? onComplete,
     RhythmBuilder? rhythmBuilder,
+    bool enabled = true,
   }) {
     return RichTextWriter._(
       ExtendedTextSpan.clone(
@@ -42,6 +45,7 @@ class RichTextWriter extends StatefulWidget {
       key: key,
       textAlign: textAlign,
       rhythmBuilder: rhythmBuilder,
+      enabled: enabled,
     );
   }
 
@@ -56,6 +60,7 @@ class RichTextWriter extends StatefulWidget {
     void Function()? onStart,
     void Function()? onComplete,
     RhythmBuilder? rhythmBuilder,
+    bool enabled = true,
   }) {
     return RichTextWriter._(
       ExtendedTextSpan(
@@ -70,6 +75,7 @@ class RichTextWriter extends StatefulWidget {
       rhythmBuilder: rhythmBuilder,
       textAlign: textAlign,
       key: key,
+      enabled: enabled,
     );
   }
 
@@ -87,9 +93,12 @@ class RichTextWriterState extends State<RichTextWriter> {
   void initState() {
     super.initState();
 
-    _remainingSpans = _traverseSpan(widget.span);
-
-    _writeNextSpan();
+    if (widget.enabled) {
+      _remainingSpans = _traverseSpan(widget.span);
+      _writeNextSpan();
+    } else {
+      _remainingSpans = [];
+    }
   }
 
   Duration _getDuration(InlineSpan span) {

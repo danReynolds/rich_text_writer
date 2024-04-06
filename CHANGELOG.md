@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Add enabled flag.
+
 ## 0.0.4
 
 * Switch to duration instead of delay naming and fix bug with changing styling after finishing writing.
