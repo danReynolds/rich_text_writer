@@ -140,6 +140,10 @@ class RichTextWriterState extends State<RichTextWriter> {
       case WidgetSpan resolvedSpan:
         return [resolvedSpan];
       case ExtendedTextSpan resolvedSpan:
+        if (!resolvedSpan.traverse) {
+          return [resolvedSpan];
+        }
+
         final text = resolvedSpan.text;
         final children = resolvedSpan.children;
 
