@@ -16,6 +16,7 @@ mixin ExtendedSpan {
 class ExtendedTextSpan extends TextSpan with ExtendedSpan {
   final Duration? duration;
   final String? delimiter;
+  final bool traverse;
 
   ExtendedTextSpan({
     super.children,
@@ -24,6 +25,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
     super.recognizer,
     this.delimiter,
     this.duration,
+    this.traverse = true,
     final void Function()? onStart,
     final void Function()? onComplete,
   }) {
@@ -47,6 +49,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
         recognizer: span.recognizer ?? recognizer,
         duration: span.duration ?? duration,
         delimiter: span.delimiter ?? delimiter,
+        traverse: span.traverse,
         onStart: () {
           span.onStart?.call();
           onStart?.call();
