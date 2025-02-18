@@ -1,3 +1,7 @@
+## 0.0.6
+
+* Add traverse flag.
+
 ## 0.0.5
 
 * Add enabled flag.
