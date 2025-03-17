@@ -60,7 +60,7 @@ final basicDemo = (BuildContext context) => DemoWidget(
   Ah, ha, ha, ha, stayin' alive, stayin' alive
   Ah, ha, ha, ha, stayin' alive.
   '''.trim(),
-  duration: 25,
+  duration: const Duration(milliseconds: 25),
   delimiter: " ",
   onStart: () {
     print('Started');
@@ -87,8 +87,9 @@ Ah, ha, ha, ha, stayin' alive, stayin' alive
 Ah, ha, ha, ha, stayin' alive
               '''
             .trim(),
-        duration: const Duration(milliseconds: 25),
+        duration: const Duration(milliseconds: 100),
         delimiter: " ",
+        textAlign: TextAlign.center,
       ),
     );
 

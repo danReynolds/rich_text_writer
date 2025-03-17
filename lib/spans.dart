@@ -23,6 +23,12 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
     super.text,
     super.style,
     super.recognizer,
+    super.locale,
+    super.mouseCursor,
+    super.onEnter,
+    super.onExit,
+    super.semanticsLabel,
+    super.spellOut,
     this.delimiter,
     this.duration,
     this.traverse = true,
@@ -50,6 +56,12 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
         duration: span.duration ?? duration,
         delimiter: span.delimiter ?? delimiter,
         traverse: span.traverse,
+        locale: span.locale,
+        spellOut: span.spellOut,
+        onEnter: span.onEnter,
+        onExit: span.onExit,
+        semanticsLabel: span.semanticsLabel,
+        mouseCursor: span.mouseCursor,
         onStart: () {
           span.onStart?.call();
           onStart?.call();
@@ -93,10 +105,11 @@ class ExtendedWidgetSpan extends WidgetSpan with ExtendedSpan {
     WidgetSpan span, {
     final void Function()? onStart,
     final void Function()? onComplete,
+    Widget? child,
   }) {
     if (span is ExtendedWidgetSpan) {
       return ExtendedWidgetSpan(
-        child: span.child,
+        child: child ?? span.child,
         alignment: span.alignment,
         baseline: span.baseline,
         style: span.style,
@@ -122,4 +135,45 @@ class ExtendedWidgetSpan extends WidgetSpan with ExtendedSpan {
       onComplete: onComplete,
     );
   }
+}
+
+abstract class HiddenSpan extends InlineSpan {
+  /// The inner span that is being wrapped in a hidden span.
+  final InlineSpan span;
+
+  const HiddenSpan({
+    required this.span,
+  });
+}
+
+class HiddenWidgetSpan extends WidgetSpan implements HiddenSpan {
+  @override
+  final WidgetSpan span;
+
+  HiddenWidgetSpan(this.span)
+      : super(
+          alignment: span.alignment,
+          baseline: span.baseline,
+          style: span.style,
+          child: Offstage(child: span.child),
+        );
+}
+
+class HiddenTextSpan extends TextSpan implements HiddenSpan {
+  @override
+  final TextSpan span;
+
+  HiddenTextSpan(this.span)
+      : super(
+          text: span.text,
+          children: span.children,
+          style: span.style?.copyWith(color: Colors.transparent) ??
+              const TextStyle(color: Colors.transparent),
+          recognizer: span.recognizer,
+          onEnter: span.onEnter,
+          onExit: span.onExit,
+          semanticsLabel: span.semanticsLabel,
+          spellOut: span.spellOut,
+          locale: span.locale,
+        );
 }
