@@ -1,3 +1,7 @@
+## 0.0.7
+
+* Use hidden spans for writing instead of a single shadow rich text.
+
 ## 0.0.6
 
 * Add traverse flag.

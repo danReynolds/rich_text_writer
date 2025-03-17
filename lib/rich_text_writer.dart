@@ -87,17 +87,17 @@ class RichTextWriterState extends State<RichTextWriter> {
   Timer? _timer;
 
   List<InlineSpan> _writtenSpans = [];
-  late List<InlineSpan> _remainingSpans;
+  late List<HiddenSpan> _hiddenSpans;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.enabled) {
-      _remainingSpans = _traverseSpan(widget.span);
+      _hiddenSpans = _traverseSpan(widget.span);
       _writeNextSpan();
     } else {
-      _remainingSpans = [];
+      _hiddenSpans = [];
     }
   }
 
@@ -110,7 +110,7 @@ class RichTextWriterState extends State<RichTextWriter> {
 
         final text = resolvedSpan.text!;
         final writtenSpanCount = _writtenSpans.length;
-        final totalSpanCount = writtenSpanCount + _remainingSpans.length;
+        final totalSpanCount = writtenSpanCount + _hiddenSpans.length;
 
         return widget.rhythmBuilder?.call(
               text,
@@ -121,7 +121,7 @@ class RichTextWriterState extends State<RichTextWriter> {
             defaultRhythmBuilder(
               resolvedSpan.text!,
               _writtenSpans.length,
-              _remainingSpans.length + _writtenSpans.length,
+              _hiddenSpans.length + _writtenSpans.length,
               duration,
             );
       case WidgetSpan resolvedSpan:
@@ -135,13 +135,13 @@ class RichTextWriterState extends State<RichTextWriter> {
 
   /// Traverses the root span, generating a list of all of the InlineSpan elements
   /// to display, flattening children and deliminating any TextSpan with a delimiter.
-  List<InlineSpan> _traverseSpan(InlineSpan span) {
+  List<HiddenSpan> _traverseSpan(InlineSpan span) {
     switch (span) {
       case WidgetSpan resolvedSpan:
-        return [resolvedSpan];
+        return [HiddenWidgetSpan(resolvedSpan)];
       case ExtendedTextSpan resolvedSpan:
         if (!resolvedSpan.traverse) {
-          return [resolvedSpan];
+          return [HiddenTextSpan(resolvedSpan)];
         }
 
         final text = resolvedSpan.text;
@@ -153,7 +153,7 @@ class RichTextWriterState extends State<RichTextWriter> {
             return [];
           }
 
-          List<InlineSpan> spans = [];
+          List<HiddenSpan> spans = [];
           for (int i = 0; i < children.length; i++) {
             final child = children[i];
             final isLast = i == children.length - 1;
@@ -228,18 +228,18 @@ class RichTextWriterState extends State<RichTextWriter> {
           );
         }
 
-        return [resolvedSpan];
+        return [HiddenTextSpan(resolvedSpan)];
       default:
         throw 'Unsupported span';
     }
   }
 
   void _writeNextSpan() {
-    if (_remainingSpans.isEmpty) {
+    if (_hiddenSpans.isEmpty) {
       return;
     }
 
-    final span = _remainingSpans.removeAt(0);
+    final span = _hiddenSpans.removeAt(0).span;
     final duration = _getDuration(span);
 
     setState(() {
@@ -267,26 +267,9 @@ class RichTextWriterState extends State<RichTextWriter> {
 
   @override
   build(context) {
-    return Stack(
-      children: [
-        Visibility(
-          visible: _remainingSpans.isEmpty,
-          maintainState: true,
-          maintainSize: true,
-          maintainAnimation: true,
-
-          /// The shadow [RichText] is a replicate of the visible [RichText] that is stacked beneath
-          /// the visible one as it is written. This is necessary so that the full space for displaying
-          /// the completed RichText is allocated up front and the surrounding layout just does get moved around as
-          /// it is written out.
-          child: RichText(text: widget.span, textAlign: widget.textAlign),
-        ),
-        if (_remainingSpans.isNotEmpty)
-          RichText(
-            text: TextSpan(children: _writtenSpans),
-            textAlign: widget.textAlign,
-          ),
-      ],
+    return RichText(
+      text: TextSpan(children: [..._writtenSpans, ..._hiddenSpans]),
+      textAlign: widget.textAlign,
     );
   }
 }
