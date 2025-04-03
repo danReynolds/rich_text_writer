@@ -46,11 +46,12 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
     void Function()? onComplete,
     TextStyle? style,
     GestureRecognizer? recognizer,
+    List<InlineSpan>? children,
   }) {
     if (span is ExtendedTextSpan) {
       return ExtendedTextSpan(
         text: span.text,
-        children: span.children,
+        children: children ?? span.children,
         style: span.style ?? style,
         recognizer: span.recognizer ?? recognizer,
         duration: span.duration ?? duration,
@@ -75,7 +76,7 @@ class ExtendedTextSpan extends TextSpan with ExtendedSpan {
 
     return ExtendedTextSpan(
       text: span.text,
-      children: span.children,
+      children: children ?? span.children,
       style: span.style ?? style,
       recognizer: span.recognizer ?? recognizer,
       duration: duration,
@@ -163,10 +164,10 @@ class HiddenTextSpan extends TextSpan implements HiddenSpan {
   @override
   final TextSpan span;
 
-  HiddenTextSpan(this.span)
+  HiddenTextSpan(this.span, List<HiddenSpan>? children)
       : super(
           text: span.text,
-          children: span.children,
+          children: children,
           style: span.style?.copyWith(color: Colors.transparent) ??
               const TextStyle(color: Colors.transparent),
           recognizer: span.recognizer,
