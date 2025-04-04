@@ -10,7 +10,7 @@ part 'utils.dart';
 part 'spans.dart';
 
 class RichTextWriter extends StatefulWidget {
-  final InlineSpan span;
+  final ExtendedSpan span;
   final RhythmBuilder? rhythmBuilder;
   final TextAlign textAlign;
   final bool enabled;
@@ -133,15 +133,26 @@ class RichTextWriterState extends State<RichTextWriter> {
     }
   }
 
+  HiddenSpan _hideSpan<T extends InlineSpan>(T span) {
+    return switch (span) {
+      TextSpan resolvedSpan => HiddenTextSpan(
+          resolvedSpan,
+          resolvedSpan.children?.map(_hideSpan).toList(),
+        ),
+      WidgetSpan resolvedSpan => HiddenWidgetSpan(resolvedSpan),
+      _ => throw 'Unsupported span',
+    };
+  }
+
   /// Traverses the root span, generating a list of all of the InlineSpan elements
   /// to display, flattening children and deliminating any TextSpan with a delimiter.
-  List<HiddenSpan> _traverseSpan(InlineSpan span) {
+  List<HiddenSpan> _traverseSpan(ExtendedSpan span) {
     switch (span) {
       case WidgetSpan resolvedSpan:
-        return [HiddenWidgetSpan(resolvedSpan)];
+        return [_hideSpan(resolvedSpan)];
       case ExtendedTextSpan resolvedSpan:
         if (!resolvedSpan.traverse) {
-          return [HiddenTextSpan(resolvedSpan)];
+          return [_hideSpan(resolvedSpan)];
         }
 
         final text = resolvedSpan.text;
@@ -228,7 +239,7 @@ class RichTextWriterState extends State<RichTextWriter> {
           );
         }
 
-        return [HiddenTextSpan(resolvedSpan)];
+        return [_hideSpan(resolvedSpan)];
       default:
         throw 'Unsupported span';
     }

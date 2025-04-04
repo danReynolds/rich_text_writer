@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Fix bug with non-traversal hidden span behavior.
+
 ## 0.0.7
 
 * Use hidden spans for writing instead of a single shadow rich text.
