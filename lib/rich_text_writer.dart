@@ -134,17 +134,14 @@ class RichTextWriterState extends State<RichTextWriter> {
   }
 
   HiddenSpan _hideSpan<T extends InlineSpan>(T span) {
-    switch (span) {
-      case TextSpan resolvedSpan:
-        return HiddenTextSpan(
+    return switch (span) {
+      TextSpan resolvedSpan => HiddenTextSpan(
           resolvedSpan,
           resolvedSpan.children?.map(_hideSpan).toList(),
-        );
-      case WidgetSpan resolvedSpan:
-        return HiddenWidgetSpan(resolvedSpan);
-      default:
-        throw 'Unsupported span';
-    }
+        ),
+      WidgetSpan resolvedSpan => HiddenWidgetSpan(resolvedSpan),
+      _ => throw 'Unsupported span',
+    };
   }
 
   /// Traverses the root span, generating a list of all of the InlineSpan elements
