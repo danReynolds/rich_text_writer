@@ -10,7 +10,7 @@ part 'utils.dart';
 part 'spans.dart';
 
 class RichTextWriter extends StatefulWidget {
-  final ExtendedSpan span;
+  final ExtendedTextSpan span;
   final RhythmBuilder? rhythmBuilder;
   final TextAlign textAlign;
   final bool enabled;
@@ -279,7 +279,9 @@ class RichTextWriterState extends State<RichTextWriter> {
   @override
   build(context) {
     return RichText(
-      text: TextSpan(children: [..._writtenSpans, ..._hiddenSpans]),
+      text: _hiddenSpans.isEmpty
+          ? widget.span
+          : TextSpan(children: [..._writtenSpans, ..._hiddenSpans]),
       textAlign: widget.textAlign,
     );
   }

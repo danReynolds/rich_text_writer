@@ -1,3 +1,7 @@
+## 0.0.9
+
+* Use the [widget] provided span once the writer has finished writing.
+
 ## 0.0.8
 
 * Fix bug with non-traversal hidden span behavior.
